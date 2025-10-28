@@ -19,7 +19,7 @@ interface MusicBrainzArtist {
 export async function fetchFolkMusic(): Promise<FolkMusicEntry[]> {
   try {
     const response = await fetch(
-      `${MUSICBRAINZ_API}/artist/?query=tag:folk%20OR%20tag:traditional&fmt=json&limit=50`,
+      `${MUSICBRAINZ_API}/artist/?query=tag:folk%20AND%20(tag:traditional%20OR%20tag:world)&fmt=json&limit=50`,
       {
         headers: {
           "User-Agent": USER_AGENT,
