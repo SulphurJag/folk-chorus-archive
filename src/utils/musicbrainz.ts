@@ -2,6 +2,7 @@ import { FolkMusicEntry } from "@/types/music";
 import { SAMPLE_FOLK_ENTRIES } from "@/constants/sampleData";
 
 const MUSICBRAINZ_API = "https://musicbrainz.org/ws/2";
+const COVERART_API = "https://coverartarchive.org";
 const USER_AGENT = "Mayagaan/1.0 (https://mayagaan.app)";
 
 interface MusicBrainzArtist {
@@ -54,6 +55,22 @@ export async function fetchFolkMusic(): Promise<FolkMusicEntry[]> {
   }
 }
 
+async function fetchCoverArt(artistId: string): Promise<string | undefined> {
+  try {
+    const response = await fetch(`${COVERART_API}/release-group/${artistId}`, {
+      headers: { Accept: "application/json" },
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      return data.images?.[0]?.thumbnails?.small || data.images?.[0]?.image;
+    }
+  } catch (error) {
+    // Silently fail - cover art is optional
+  }
+  return undefined;
+}
+
 function mapArtistToEntry(artist: MusicBrainzArtist): FolkMusicEntry {
   const beginYear = artist["life-span"]?.begin
     ? parseInt(artist["life-span"].begin.split("-")[0])
@@ -74,6 +91,7 @@ function mapArtistToEntry(artist: MusicBrainzArtist): FolkMusicEntry {
     tags,
     description: artist.disambiguation || `${artist.name} - Folk and traditional music artist from ${artist.country || "various regions"}.`,
     media: [],
+    imageUrl: `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(artist.name)}.jpg?width=300`,
   };
 }
 

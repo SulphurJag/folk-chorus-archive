@@ -1,5 +1,6 @@
-import { Heart, Shield, BookOpen, Globe } from "lucide-react";
+import { Heart, Shield, BookOpen, Globe, Database } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DATA_SOURCES } from "@/constants/dataSources";
 
 export function AboutSection() {
   return (
@@ -91,10 +92,41 @@ export function AboutSection() {
         </ul>
       </div>
 
+      <div className="bg-card rounded-lg border p-6 shadow-card">
+        <div className="flex items-center gap-3 mb-4">
+          <Database className="h-6 w-6 text-primary" />
+          <h3 className="text-xl font-semibold text-foreground">Data Sources</h3>
+        </div>
+        <p className="text-muted-foreground leading-relaxed mb-6">
+          Mayagaan integrates multiple respected archives and databases to bring you authentic folk music from around the world:
+        </p>
+        <div className="space-y-4">
+          {DATA_SOURCES.map((source) => (
+            <div key={source.name} className="border-l-2 border-primary/30 pl-4">
+              <div className="flex items-center gap-2 mb-1">
+                <h4 className="font-semibold text-foreground">{source.name}</h4>
+                <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">
+                  {source.type}
+                </span>
+              </div>
+              <p className="text-sm text-muted-foreground mb-1">{source.description}</p>
+              <p className="text-xs text-muted-foreground italic mb-2">{source.ethicalNotes}</p>
+              <a
+                href={source.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-primary hover:underline"
+              >
+                Visit {source.name} →
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <div className="text-center text-sm text-muted-foreground">
         <p>
-          Data sourced from MusicBrainz and community contributions. All content is used for
-          educational and archival purposes with proper attribution.
+          All content is used for educational and archival purposes with proper attribution and respect for cultural origins.
         </p>
       </div>
     </section>
