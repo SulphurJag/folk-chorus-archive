@@ -7,6 +7,7 @@ const USER_AGENT = "Mayagaan/1.0 (https://mayagaan.app)";
 interface MusicBrainzArtist {
   id: string;
   name: string;
+  type?: string;
   country?: string;
   "life-span"?: {
     begin?: string;
@@ -19,7 +20,7 @@ interface MusicBrainzArtist {
 export async function fetchFolkMusic(): Promise<FolkMusicEntry[]> {
   try {
     const response = await fetch(
-      `${MUSICBRAINZ_API}/artist/?query=tag:folk%20AND%20(tag:traditional%20OR%20tag:world)&fmt=json&limit=50`,
+      `${MUSICBRAINZ_API}/artist/?query=tag:folk%20AND%20(tag:traditional%20OR%20tag:world)&fmt=json&limit=100`,
       {
         headers: {
           "User-Agent": USER_AGENT,
@@ -35,7 +36,18 @@ export async function fetchFolkMusic(): Promise<FolkMusicEntry[]> {
     const data = await response.json();
     const artists = data.artists as MusicBrainzArtist[];
 
-    return artists.map((artist) => mapArtistToEntry(artist));
+    // Filter out "Various Artists" and compilation entries
+    const filteredArtists = artists.filter(
+      (artist) =>
+        artist.id !== "89ad4ac3-39f7-470e-963a-56509c546377" && // Various Artists ID
+        !artist.name.toLowerCase().includes("various") &&
+        !artist.name.toLowerCase().includes("compilation") &&
+        artist.type !== "Other"
+    );
+
+    return filteredArtists
+      .slice(0, 50)
+      .map((artist) => mapArtistToEntry(artist));
   } catch (error) {
     console.error("Failed to fetch from MusicBrainz, using sample data:", error);
     return SAMPLE_FOLK_ENTRIES;
