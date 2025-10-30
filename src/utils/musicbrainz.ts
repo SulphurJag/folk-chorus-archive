@@ -90,6 +90,7 @@ function mapArtistToEntry(artist: MusicBrainzArtist): FolkMusicEntry {
     year: beginYear,
     tags,
     description: artist.disambiguation || `${artist.name} - Folk and traditional music artist from ${artist.country || "various regions"}.`,
+    audio: undefined,
     media: [],
     imageUrl: `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(artist.name)}.jpg?width=300`,
   };

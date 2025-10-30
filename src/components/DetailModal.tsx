@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { FolkMusicEntry } from "@/types/music";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { AudioPlayer } from "./AudioPlayer";
 
 interface DetailModalProps {
   entry: FolkMusicEntry | null;
@@ -77,21 +78,13 @@ export function DetailModal({ entry, open, onClose }: DetailModalProps) {
               </p>
             </div>
 
-            {entry.audio && (
-              <div>
-                <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
-                  <Music className="h-4 w-4 text-primary" />
-                  Audio Player
-                </h3>
-                <audio
-                  controls
-                  className="w-full"
-                  src={entry.audio}
-                >
-                  Your browser does not support the audio element.
-                </audio>
-              </div>
-            )}
+            <div>
+              <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+                <Music className="h-4 w-4 text-primary" />
+                Audio Player
+              </h3>
+              <AudioPlayer src={entry.audio} />
+            </div>
 
             <div className="pt-4 border-t border-border">
               <p className="text-xs text-muted-foreground">

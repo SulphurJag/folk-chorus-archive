@@ -61,6 +61,7 @@ function mapLOCToEntry(result: LOCResult): FolkMusicEntry {
     year,
     tags: result.subject?.slice(0, 5) || ["folk", "traditional"],
     description: result.description?.join(" ") || `Traditional folk recording from the Library of Congress collection.`,
+    audio: result.url,
     media: result.url ? [result.url] : [],
     imageUrl: result.image_url?.[0] || undefined,
   };

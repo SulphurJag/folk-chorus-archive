@@ -77,6 +77,8 @@ function mapSmithsonianToEntry(row: SmithsonianRow): FolkMusicEntry {
   const physicalDesc = content?.freetext?.physicalDescription?.[0]?.content || "";
   const description = notes || physicalDesc || `Traditional music from the Smithsonian Folkways collection.`;
 
+  const recordLink = content?.descriptiveNonRepeating?.record_link;
+  
   return {
     id: `smithsonian-${row.id}`,
     title,
@@ -87,7 +89,8 @@ function mapSmithsonianToEntry(row: SmithsonianRow): FolkMusicEntry {
     year,
     tags: indexed?.topic?.slice(0, 5) || ["folk", "traditional"],
     description,
-    media: [],
+    audio: recordLink,
+    media: recordLink ? [recordLink] : [],
   };
 }
 
