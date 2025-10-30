@@ -2,14 +2,16 @@ import { FolkMusicEntry } from "@/types/music";
 import { fetchFolkMusic } from "./musicbrainz";
 import { fetchLibraryOfCongressMusic } from "./libraryOfCongress";
 import { fetchSmithsonianFolkways } from "./smithsonianFolkways";
+import { fetchInternetArchiveMusic } from "./internetArchive";
 
 export async function fetchAllFolkMusic(): Promise<FolkMusicEntry[]> {
   try {
     // Fetch from all sources in parallel
-    const [musicBrainzData, locData, smithsonianData] = await Promise.all([
+    const [musicBrainzData, locData, smithsonianData, archiveData] = await Promise.all([
       fetchFolkMusic(),
       fetchLibraryOfCongressMusic(),
       fetchSmithsonianFolkways(),
+      fetchInternetArchiveMusic(),
     ]);
 
     // Combine all results
@@ -17,6 +19,7 @@ export async function fetchAllFolkMusic(): Promise<FolkMusicEntry[]> {
       ...musicBrainzData,
       ...locData,
       ...smithsonianData,
+      ...archiveData,
     ];
 
     // Remove duplicates based on normalized title and artist
@@ -25,7 +28,8 @@ export async function fetchAllFolkMusic(): Promise<FolkMusicEntry[]> {
     console.log(`Fetched ${uniqueEntries.length} unique folk music entries from ${
       [musicBrainzData.length > 0 && 'MusicBrainz',
        locData.length > 0 && 'Library of Congress',
-       smithsonianData.length > 0 && 'Smithsonian Folkways'].filter(Boolean).join(', ')
+       smithsonianData.length > 0 && 'Smithsonian Folkways',
+       archiveData.length > 0 && 'Internet Archive'].filter(Boolean).join(', ')
     }`);
 
     return uniqueEntries;

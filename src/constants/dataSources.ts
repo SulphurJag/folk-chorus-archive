@@ -15,6 +15,13 @@ export const DATA_SOURCES: DataSource[] = [
     ethicalNotes: "Attribute sources; rate limits apply. Open data community project.",
   },
   {
+    name: "Internet Archive",
+    type: "Audio Archive",
+    description: "Public domain folk music recordings with playable audio files",
+    url: "https://archive.org",
+    ethicalNotes: "Free public domain audio; attribution appreciated. Non-profit digital library.",
+  },
+  {
     name: "Cover Art Archive",
     type: "API",
     description: "Artist and album images linked to MusicBrainz",
