@@ -10,7 +10,7 @@ import { LoadingState } from "@/components/LoadingState";
 import { ErrorState } from "@/components/ErrorState";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FolkMusicEntry, FilterState } from "@/types/music";
-import { fetchFolkMusic } from "@/utils/musicbrainz";
+import { fetchAllFolkMusic } from "@/utils/unifiedFetcher";
 
 const Index = () => {
   const [entries, setEntries] = useState<FolkMusicEntry[]>([]);
@@ -36,7 +36,7 @@ const Index = () => {
     try {
       setLoading(true);
       setError(false);
-      const data = await fetchFolkMusic();
+      const data = await fetchAllFolkMusic();
       setEntries(data);
     } catch (err) {
       setError(true);
